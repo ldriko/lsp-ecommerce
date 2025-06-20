@@ -1,0 +1,6 @@
+resources/js/actions/*
+resources/js/components/ui/*
+resources/js/routes/*
+resources/js/wayfinder/*
+resources/js/ziggy.js
+resources/views/mail/*
