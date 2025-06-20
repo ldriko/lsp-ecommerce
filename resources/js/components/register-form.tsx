@@ -2,13 +2,22 @@ import { Loader2, Rocket } from "lucide-react";
 
 import AuthController from "@/actions/App/Http/Controllers/AuthController";
 import PageController from "@/actions/App/Http/Controllers/PageController";
+import InputError from "@/components/input-error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { cn, format } from "@/lib/utils";
 import { SharedData } from "@/types";
 import { Link, useForm, usePage } from "@inertiajs/react";
-import InputError from "./input-error";
+import { DatePicker } from "./date-picker";
+import { Textarea } from "./ui/textarea";
 
 export function RegisterForm({
     className,
@@ -16,8 +25,13 @@ export function RegisterForm({
 }: React.ComponentProps<"div">) {
     const { name } = usePage<SharedData>().props;
 
-    const { data, setData, errors, submit, processing } = useForm({
+    const { data, setData, errors, submit, processing, transform } = useForm({
         name: "",
+        gender: "male",
+        date_of_birth: undefined as Date | undefined,
+        city: "",
+        address: "",
+        phone: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -25,6 +39,12 @@ export function RegisterForm({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        transform((data) => ({
+            ...data,
+            date_of_birth: format.rawDate(data.date_of_birth),
+        }));
+
         submit(AuthController.register());
     };
 
@@ -68,6 +88,76 @@ export function RegisterForm({
                                 autoFocus
                             />
                             <InputError message={errors.name} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="grid gap-3">
+                                <Label htmlFor="gender">Jenis Kelamin</Label>
+                                <Select>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Pilih Jenis Kelamin" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="male">
+                                            Laki-laki
+                                        </SelectItem>
+                                        <SelectItem value="female">
+                                            Perempuan
+                                        </SelectItem>
+                                        <SelectItem value="other">
+                                            Tidak ingin menyebutkan
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.gender} />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="gender">Jenis Kelamin</Label>
+                                <DatePicker
+                                    date={data.date_of_birth}
+                                    onChange={(date) =>
+                                        setData("date_of_birth", date)
+                                    }
+                                />
+                                <InputError message={errors.date_of_birth} />
+                            </div>
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="city">Kota</Label>
+                            <Input
+                                value={data.city}
+                                onChange={(e) =>
+                                    setData("city", e.target.value)
+                                }
+                                id="city"
+                                type="text"
+                                placeholder="Masukkan kota anda"
+                            />
+                            <InputError message={errors.city} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="address">Alamat</Label>
+                            <Textarea
+                                value={data.address}
+                                onChange={(e) =>
+                                    setData("address", e.target.value)
+                                }
+                                id="address"
+                                placeholder="Masukkan alamat anda"
+                            />
+                            <InputError message={errors.address} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="phone">Nomor Telepon</Label>
+                            <Input
+                                value={data.phone}
+                                onChange={(e) =>
+                                    setData("phone", e.target.value)
+                                }
+                                id="phone"
+                                type="tel"
+                                placeholder="Masukkan nomor telepon anda"
+                            />
+                            <InputError message={errors.phone} />
                         </div>
                         <div className="grid gap-3">
                             <Label htmlFor="email">Email</Label>

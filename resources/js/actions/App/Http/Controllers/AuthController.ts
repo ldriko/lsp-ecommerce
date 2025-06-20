@@ -147,7 +147,7 @@ showLogin.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): 
 
 /**
 * @see \App\Http\Controllers\AuthController::login
-* @see app/Http/Controllers/AuthController.php:39
+* @see app/Http/Controllers/AuthController.php:49
 * @route '/login'
 */
 export const login = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -165,7 +165,7 @@ login.definition = {
 
 /**
 * @see \App\Http\Controllers\AuthController::login
-* @see app/Http/Controllers/AuthController.php:39
+* @see app/Http/Controllers/AuthController.php:49
 * @route '/login'
 */
 login.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -174,7 +174,7 @@ login.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\AuthController::login
-* @see app/Http/Controllers/AuthController.php:39
+* @see app/Http/Controllers/AuthController.php:49
 * @route '/login'
 */
 login.post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -187,7 +187,7 @@ login.post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 
 /**
 * @see \App\Http\Controllers\AuthController::logout
-* @see app/Http/Controllers/AuthController.php:53
+* @see app/Http/Controllers/AuthController.php:63
 * @route '/logout'
 */
 export const logout = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -205,7 +205,7 @@ logout.definition = {
 
 /**
 * @see \App\Http\Controllers\AuthController::logout
-* @see app/Http/Controllers/AuthController.php:53
+* @see app/Http/Controllers/AuthController.php:63
 * @route '/logout'
 */
 logout.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -214,7 +214,7 @@ logout.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\AuthController::logout
-* @see app/Http/Controllers/AuthController.php:53
+* @see app/Http/Controllers/AuthController.php:63
 * @route '/logout'
 */
 logout.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -227,7 +227,7 @@ logout.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 
 /**
 * @see \App\Http\Controllers\AuthController::logout
-* @see app/Http/Controllers/AuthController.php:53
+* @see app/Http/Controllers/AuthController.php:63
 * @route '/logout'
 */
 logout.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {

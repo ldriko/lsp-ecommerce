@@ -1,7 +1,7 @@
 import { queryParams, type QueryParams } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\AuthController::post
-* @see app/Http/Controllers/AuthController.php:39
+* @see app/Http/Controllers/AuthController.php:49
 * @route '/login'
 */
 export const post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -19,7 +19,7 @@ post.definition = {
 
 /**
 * @see \App\Http\Controllers\AuthController::post
-* @see app/Http/Controllers/AuthController.php:39
+* @see app/Http/Controllers/AuthController.php:49
 * @route '/login'
 */
 post.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -28,7 +28,7 @@ post.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\AuthController::post
-* @see app/Http/Controllers/AuthController.php:39
+* @see app/Http/Controllers/AuthController.php:49
 * @route '/login'
 */
 post.post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {

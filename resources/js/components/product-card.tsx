@@ -24,12 +24,7 @@ export default function ProductCard({ className = "" }) {
     }
 
     return (
-        <Card
-            className={cn(
-                "cursor-pointer overflow-hidden shadow-none hover:shadow",
-                className,
-            )}
-        >
+        <Card className={cn("cursor-pointer overflow-hidden", className)}>
             <div className="-mt-6 aspect-square border-b bg-muted" />
             <CardHeader className="flex justify-between gap-3">
                 <div className="grid gap-1.5">
