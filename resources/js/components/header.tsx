@@ -2,7 +2,13 @@ import CartController from "@/actions/App/Http/Controllers/CartController";
 import { useAppearance } from "@/hooks/use-appearance";
 import { SharedData } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
-import { Moon, ShoppingBag, Sun, UserCircle } from "lucide-react";
+import {
+    BriefcaseMedical,
+    Moon,
+    ShoppingBag,
+    Sun,
+    UserCircle,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { UserDropdown } from "./user-dropdown";
 
@@ -14,7 +20,10 @@ export function Header() {
         <header className="border-b">
             <div className="container mx-auto flex items-center justify-between gap-4 p-3">
                 <Link href="/" className="font-bold">
-                    {name}
+                    <div className="flex items-center gap-2">
+                        <BriefcaseMedical />
+                        {name}
+                    </div>
                 </Link>
                 <div className="flex items-center">
                     {auth.user ? (

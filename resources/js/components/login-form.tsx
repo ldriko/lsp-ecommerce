@@ -1,4 +1,4 @@
-import { Loader2, Rocket } from "lucide-react";
+import { BriefcaseMedical, Loader2 } from "lucide-react";
 
 import AuthController from "@/actions/App/Http/Controllers/AuthController";
 import PageController from "@/actions/App/Http/Controllers/PageController";
@@ -31,14 +31,12 @@ export function LoginForm({
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-center gap-2">
-                        <a
-                            href="#"
+                        <Link
+                            href={PageController.home.url()}
                             className="flex flex-col items-center gap-2 font-medium"
                         >
-                            <div className="flex size-8 items-center justify-center rounded-md">
-                                <Rocket className="size-6" />
-                            </div>
-                        </a>
+                            <BriefcaseMedical className="size-8" />
+                        </Link>
                         <h1 className="text-xl font-bold">
                             Selamat datang di {name}
                         </h1>
