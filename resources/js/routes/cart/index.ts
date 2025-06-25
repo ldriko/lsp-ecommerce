@@ -2,7 +2,7 @@ import { queryParams, type QueryParams } from './../../wayfinder'
 import update from './update'
 /**
 * @see \App\Http\Controllers\CartController::index
-* @see app/Http/Controllers/CartController.php:11
+* @see app/Http/Controllers/CartController.php:12
 * @route '/cart'
 */
 export const index = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -20,7 +20,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\CartController::index
-* @see app/Http/Controllers/CartController.php:11
+* @see app/Http/Controllers/CartController.php:12
 * @route '/cart'
 */
 index.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -29,7 +29,7 @@ index.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\CartController::index
-* @see app/Http/Controllers/CartController.php:11
+* @see app/Http/Controllers/CartController.php:12
 * @route '/cart'
 */
 index.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -42,7 +42,7 @@ index.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 
 /**
 * @see \App\Http\Controllers\CartController::index
-* @see app/Http/Controllers/CartController.php:11
+* @see app/Http/Controllers/CartController.php:12
 * @route '/cart'
 */
 index.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -55,7 +55,7 @@ index.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 
 /**
 * @see \App\Http\Controllers\CartController::update
-* @see app/Http/Controllers/CartController.php:21
+* @see app/Http/Controllers/CartController.php:22
 * @route '/cart'
 */
 export const update = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -73,7 +73,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\CartController::update
-* @see app/Http/Controllers/CartController.php:21
+* @see app/Http/Controllers/CartController.php:22
 * @route '/cart'
 */
 update.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -82,7 +82,7 @@ update.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\CartController::update
-* @see app/Http/Controllers/CartController.php:21
+* @see app/Http/Controllers/CartController.php:22
 * @route '/cart'
 */
 update.put = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -95,7 +95,7 @@ update.put = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 
 /**
 * @see \App\Http\Controllers\CartController::destroy
-* @see app/Http/Controllers/CartController.php:85
+* @see app/Http/Controllers/CartController.php:109
 * @route '/cart/{product}'
 */
 export const destroy = (args: { product: number | { id: number } } | [product: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -113,7 +113,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\CartController::destroy
-* @see app/Http/Controllers/CartController.php:85
+* @see app/Http/Controllers/CartController.php:109
 * @route '/cart/{product}'
 */
 destroy.url = (args: { product: number | { id: number } } | [product: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -144,7 +144,7 @@ destroy.url = (args: { product: number | { id: number } } | [product: number | {
 
 /**
 * @see \App\Http\Controllers\CartController::destroy
-* @see app/Http/Controllers/CartController.php:85
+* @see app/Http/Controllers/CartController.php:109
 * @route '/cart/{product}'
 */
 destroy.delete = (args: { product: number | { id: number } } | [product: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -155,10 +155,51 @@ destroy.delete = (args: { product: number | { id: number } } | [product: number 
     method: 'delete',
 })
 
+/**
+* @see \App\Http\Controllers\CartController::checkout
+* @see app/Http/Controllers/CartController.php:74
+* @route '/cart/checkout'
+*/
+export const checkout = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'post',
+} => ({
+    url: checkout.url(options),
+    method: 'post',
+})
+
+checkout.definition = {
+    methods: ['post'],
+    url: '/cart/checkout',
+}
+
+/**
+* @see \App\Http\Controllers\CartController::checkout
+* @see app/Http/Controllers/CartController.php:74
+* @route '/cart/checkout'
+*/
+checkout.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
+    return checkout.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\CartController::checkout
+* @see app/Http/Controllers/CartController.php:74
+* @route '/cart/checkout'
+*/
+checkout.post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'post',
+} => ({
+    url: checkout.url(options),
+    method: 'post',
+})
+
 const cart = {
     index,
     update,
     destroy,
+    checkout,
 }
 
 export default cart

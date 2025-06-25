@@ -59,8 +59,6 @@ export default function Cart({ cartItems }: Props) {
 
         data.cart_items.splice(index, 1);
 
-        console.log(data.cart_items);
-
         handleUpdateCart();
     }
 
@@ -74,6 +72,10 @@ export default function Cart({ cartItems }: Props) {
                 submit(CartController.update());
             }, 1000),
         );
+    }
+
+    function handleCheckout() {
+        submit(CartController.checkout());
     }
 
     return (
@@ -188,7 +190,10 @@ export default function Cart({ cartItems }: Props) {
                             </CardTitle>
                         </CardContent>
                         <CardFooter>
-                            <Button disabled={processing}>
+                            <Button
+                                disabled={processing}
+                                onClick={handleCheckout}
+                            >
                                 {processing && (
                                     <Loader2 className="animate-spin" />
                                 )}

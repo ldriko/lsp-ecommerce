@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -72,14 +73,37 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
-        $cartItems = $request->user()
-            ->cartItems()
+        $user = $request->user();
+        $cartItems = $user->cartItems()
             ->with('product')
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return back()->with('error', 'Keranjang belanja kosong.');
+            return back()->with('flash', [
+                'type' => 'error',
+                'message' => 'Keranjang belanja anda kosong.',
+            ]);
         }
+
+        DB::transaction(function () use ($user, $cartItems) {
+            $order = $user->orders()->create();
+            $total = 0;
+
+            foreach ($cartItems as $item) {
+                $order->lines()->create([
+                    'product_id' => $item->product_id,
+                    'qty' => $item->qty,
+                    'price' => $item->price,
+                ]);
+                $total += $item->qty * $item->price;
+            }
+
+            $order->update(['total' => $total]);
+
+            $user->cartItems()->delete();
+        });
+
+        return to_route('orders.index');
     }
 
     public function destroy(Request $request, Product $product)

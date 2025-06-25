@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +36,15 @@ Route::middleware('auth')->group(function () {
         ->name('cart.update.single');
     Route::delete('/cart/{product}', [CartController::class, 'destroy'])
         ->name('cart.destroy');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])
+        ->name('cart.checkout');
+
+    Route::prefix('/orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])
+            ->name('orders.index');
+        Route::get('/{order}', [OrderController::class, 'show'])
+            ->name('orders.show');
+        Route::get('/{order}/pdf', [OrderController::class, 'pdf'])
+            ->name('orders.pdf');
+    });
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -37,6 +38,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        Log::debug($request->session()->get('flash.type'));
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -49,6 +52,10 @@ class HandleInertiaRequests extends Middleware
             ],
             'storage' => [
                 'url' => Storage::url(''),
+            ],
+            'flash' => fn (): array => [
+                'type' => $request->session()->get('flash.type'),
+                'message' => $request->session()->get('flash.message'),
             ],
         ];
     }

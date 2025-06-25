@@ -11,6 +11,10 @@ export interface SharedData {
     storage: {
         url: string;
     };
+    flash: {
+        type: string | null;
+        message: string | null;
+    };
     [key: string]: unknown;
 }
 
@@ -51,5 +55,28 @@ export interface CartItem {
     qty: number;
     price: number;
 
+    product?: Product;
+}
+
+export interface Order {
+    id: number;
+    user_id: number;
+    total: number;
+    status: string;
+    created_at: string;
+    updated_at: string;
+
+    user?: User;
+    lines?: OrderLine[];
+}
+
+export interface OrderLine {
+    id: number;
+    order_id: number;
+    product_id: number;
+    qty: number;
+    price: number;
+
+    order?: Order;
     product?: Product;
 }

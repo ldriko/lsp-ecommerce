@@ -6,9 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const format = {
-    date(date: Date | undefined) {
+    date(date: Date | string | undefined) {
         if (!date) {
             return "";
+        }
+
+        if (typeof date === "string") {
+            date = new Date(date);
         }
 
         return date.toLocaleDateString("id-ID", {

@@ -1,7 +1,7 @@
 import { queryParams, type QueryParams } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CartController::single
-* @see app/Http/Controllers/CartController.php:53
+* @see app/Http/Controllers/CartController.php:54
 * @route '/cart/single'
 */
 export const single = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -19,7 +19,7 @@ single.definition = {
 
 /**
 * @see \App\Http\Controllers\CartController::single
-* @see app/Http/Controllers/CartController.php:53
+* @see app/Http/Controllers/CartController.php:54
 * @route '/cart/single'
 */
 single.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -28,7 +28,7 @@ single.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\CartController::single
-* @see app/Http/Controllers/CartController.php:53
+* @see app/Http/Controllers/CartController.php:54
 * @route '/cart/single'
 */
 single.put = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
