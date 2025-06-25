@@ -63,10 +63,17 @@ export default function OrdersIndex({ orders }: Props) {
                                         </Link>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button size="sm" variant="ghost">
-                                            <Printer />
-                                            Cetak
-                                        </Button>
+                                        <a
+                                            href={OrderController.pdf.url(
+                                                order.id,
+                                            )}
+                                            target="_blank"
+                                        >
+                                            <Button size="sm" variant="ghost">
+                                                <Printer />
+                                                Cetak
+                                            </Button>
+                                        </a>
                                     </TableCell>
                                 </tr>
                             ))}
