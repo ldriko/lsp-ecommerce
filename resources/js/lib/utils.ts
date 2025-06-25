@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const format = {
-    date: (date: Date | undefined) => {
+    date(date: Date | undefined) {
         if (!date) {
             return "";
         }
@@ -17,7 +17,7 @@ export const format = {
             year: "numeric",
         });
     },
-    rawDate: (date: Date | undefined) => {
+    rawDate(date: Date | undefined) {
         if (!date) {
             return "";
         }
@@ -27,5 +27,12 @@ export const format = {
         const day = String(date.getDate()).padStart(2, "0");
 
         return `${year}-${month}-${day}`;
+    },
+    number(value: string | number) {
+        return new Intl.NumberFormat("id-ID", {
+            style: "decimal",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        }).format(Number(value));
     },
 };
