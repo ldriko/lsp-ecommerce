@@ -1,7 +1,7 @@
 import { queryParams, type QueryParams } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\ProductController::show
-* @see app/Http/Controllers/ProductController.php:9
+* @see app/Http/Controllers/ProductController.php:10
 * @route '/product/{product}'
 */
 export const show = (args: { product: number | { id: number } } | [product: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -19,7 +19,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::show
-* @see app/Http/Controllers/ProductController.php:9
+* @see app/Http/Controllers/ProductController.php:10
 * @route '/product/{product}'
 */
 show.url = (args: { product: number | { id: number } } | [product: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -50,7 +50,7 @@ show.url = (args: { product: number | { id: number } } | [product: number | { id
 
 /**
 * @see \App\Http\Controllers\ProductController::show
-* @see app/Http/Controllers/ProductController.php:9
+* @see app/Http/Controllers/ProductController.php:10
 * @route '/product/{product}'
 */
 show.get = (args: { product: number | { id: number } } | [product: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -63,7 +63,7 @@ show.get = (args: { product: number | { id: number } } | [product: number | { id
 
 /**
 * @see \App\Http\Controllers\ProductController::show
-* @see app/Http/Controllers/ProductController.php:9
+* @see app/Http/Controllers/ProductController.php:10
 * @route '/product/{product}'
 */
 show.head = (args: { product: number | { id: number } } | [product: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {

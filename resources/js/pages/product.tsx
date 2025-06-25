@@ -1,40 +1,82 @@
-import ProductCard from "@/components/product-card";
+import AuthController from "@/actions/App/Http/Controllers/AuthController";
+import CartController from "@/actions/App/Http/Controllers/CartController";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import AppLayout from "@/layouts/app";
 import { format } from "@/lib/utils";
-import { Product } from "@/types";
-import { ShoppingBag } from "lucide-react";
-import { useMemo, useState } from "react";
+import { CartItem, Product, SharedData } from "@/types";
+import { router, useForm, usePage } from "@inertiajs/react";
+import {
+    Check,
+    Edit,
+    Loader2,
+    Minus,
+    Plus,
+    ShoppingBag,
+    Trash,
+} from "lucide-react";
+import { useEffect, useMemo } from "react";
 
 interface Props {
     product: Product;
-    relatedProducts: Product[];
+    cartItem: CartItem | null;
 }
 
-export default function ProductPage({ product, relatedProducts }: Props) {
-    const [qty, setQty] = useState<number>(1);
+export default function ProductPage({ product, cartItem }: Props) {
+    const page = usePage<SharedData>();
+
+    const { data, setData, processing, submit, recentlySuccessful } = useForm({
+        product_id: product.id,
+        qty: cartItem ? cartItem.qty : 1,
+    });
+
+    useEffect(() => {
+        if (!cartItem) {
+            setData("qty", 1);
+        }
+    }, [cartItem, setData]);
 
     const subtotal = useMemo(() => {
-        return product.price * qty;
-    }, [product.price, qty]);
+        return product.price * data.qty;
+    }, [product.price, data.qty]);
 
     function handleAddQty() {
-        setQty((prev) => prev + 1);
+        setData("qty", data.qty + 1);
     }
 
     function handleSubQty() {
-        setQty((prev) => (prev > 1 ? prev - 1 : 1));
+        setData("qty", data.qty > 1 ? data.qty - 1 : 1);
     }
 
     function handleQtyChange(e: React.ChangeEvent<HTMLInputElement>) {
         const value = parseInt(e.target.value, 10);
         if (!isNaN(value) && value >= 1) {
-            setQty(value);
+            setData("qty", value);
         } else if (e.target.value === "") {
-            setQty(1);
+            setData("qty", 1);
         }
+    }
+
+    function handleAddToCart() {
+        if (page.props.auth.user === null) {
+            return router.visit(AuthController.login.url());
+        }
+
+        submit(CartController.updateSingle(), {
+            onSuccess() {
+                router.reload({ only: ["cartItem"] });
+            },
+        });
+    }
+
+    function handleRemoveFromCart() {
+        submit(CartController.destroy(product.id), {
+            onSuccess() {
+                router.reload({ only: ["cartItem"] });
+            },
+        });
     }
 
     return (
@@ -46,7 +88,10 @@ export default function ProductPage({ product, relatedProducts }: Props) {
                             <div className="aspect-square w-full bg-muted">
                                 {product.image && (
                                     <img
-                                        src={product.image}
+                                        src={
+                                            page.props.storage.url +
+                                            product.image
+                                        }
                                         alt={product.name}
                                         className="h-full w-full object-cover"
                                     />
@@ -56,14 +101,19 @@ export default function ProductPage({ product, relatedProducts }: Props) {
                     </div>
                     <Card className="flex-1">
                         <CardHeader>
-                            <CardTitle className="text-xl">
-                                {product.name}
-                            </CardTitle>
+                            <div className="flex justify-between gap-3">
+                                <CardTitle className="text-xl">
+                                    {product.name}
+                                </CardTitle>
+                                <Badge variant="outline">
+                                    {product.category?.name}
+                                </Badge>
+                            </div>
                             <CardTitle className="text-2xl font-black">
                                 Rp{format.number(product.price)}
                             </CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="grid gap-3">
                             <div
                                 className="prose prose-sm text-muted-foreground"
                                 dangerouslySetInnerHTML={{
@@ -82,47 +132,73 @@ export default function ProductPage({ product, relatedProducts }: Props) {
                                 <div className="flex gap-3">
                                     <Button
                                         variant="outline"
+                                        size="icon"
                                         onClick={handleSubQty}
                                     >
-                                        -
+                                        <Minus />
                                     </Button>
                                     <Input
                                         className="flex-1 text-center"
-                                        value={qty}
+                                        value={data.qty}
                                         onChange={handleQtyChange}
                                     />
                                     <Button
                                         variant="outline"
+                                        size="icon"
                                         onClick={handleAddQty}
                                     >
-                                        +
+                                        <Plus />
                                     </Button>
                                 </div>
                                 <div className="flex justify-between gap-3 text-muted-foreground">
                                     <div>Subtotal</div>
                                     <div>Rp{format.number(subtotal)}</div>
                                 </div>
-                                <Button className="w-full">
-                                    Tambah ke Keranjang
-                                </Button>
+                                <div className="flex gap-3">
+                                    <Button
+                                        className="flex-1"
+                                        disabled={processing}
+                                        onClick={handleAddToCart}
+                                        variant={
+                                            recentlySuccessful
+                                                ? "outline"
+                                                : "default"
+                                        }
+                                    >
+                                        {processing && (
+                                            <Loader2 className="animate-spin" />
+                                        )}
+                                        {recentlySuccessful && !processing ? (
+                                            <>
+                                                <Check />
+                                                Berhasil disimpan
+                                            </>
+                                        ) : cartItem ? (
+                                            <>
+                                                <Edit />
+                                                Perbarui Keranjang
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Plus />
+                                                Tambah ke Keranjang
+                                            </>
+                                        )}
+                                    </Button>
+                                    {cartItem && (
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            onClick={handleRemoveFromCart}
+                                        >
+                                            <Trash />
+                                        </Button>
+                                    )}
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
                 </div>
-
-                {relatedProducts.length > 0 && (
-                    <div className="grid gap-3">
-                        <div className="font-medium">Produk Terkait</div>
-                        <div className="grid auto-cols-[minmax(200px,1fr)] grid-flow-col gap-3 overflow-x-auto overflow-y-hidden p-3">
-                            {relatedProducts.map((relatedProduct, key) => (
-                                <ProductCard
-                                    key={key}
-                                    product={relatedProduct}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
         </AppLayout>
     );

@@ -6,10 +6,11 @@ export interface Auth {
 
 export interface SharedData {
     name: string;
-    quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
-    sidebarOpen: boolean;
+    storage: {
+        url: string;
+    };
     [key: string]: unknown;
 }
 
@@ -41,4 +42,14 @@ export interface Product {
     is_featured: boolean;
 
     category?: Category;
+}
+
+export interface CartItem {
+    id: number;
+    product_id: number;
+    user_id: number;
+    qty: number;
+    price: number;
+
+    product?: Product;
 }

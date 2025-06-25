@@ -1,5 +1,4 @@
 import ProductCard from "@/components/product-card";
-import { Card } from "@/components/ui/card";
 import AppLayout from "@/layouts/app";
 import { Product } from "@/types";
 
@@ -11,7 +10,6 @@ interface Props {
 export default function Home({ featured, products }: Props) {
     return (
         <AppLayout>
-            <Card className="h-[320px]" />
             <div className="grid gap-3">
                 <div className="font-medium">Produk Pilihan</div>
                 <div className="grid auto-cols-[minmax(200px,1fr)] grid-flow-col gap-3 overflow-x-auto overflow-y-hidden p-3">

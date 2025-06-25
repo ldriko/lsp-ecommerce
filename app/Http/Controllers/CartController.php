@@ -2,10 +2,92 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
+use App\Models\Product;
+use Illuminate\Http\Request;
+
 class CartController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return inertia('cart');
+        $cartItems = $request->user()
+            ->cartItems()
+            ->with('product')
+            ->get();
+
+        return inertia('cart', compact('cartItems'));
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'cart_items' => ['array'],
+            'cart_items.*.product_id' => ['required', 'exists:products,id'],
+            'cart_items.*.qty' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $userId = $request->user()->id;
+        $products = Product::findMany(
+            collect($request->cart_items)->pluck('product_id')
+        )->keyBy('id');
+
+        foreach ($request->cart_items as $item) {
+            $productId = $item['product_id'];
+            $qty = $item['qty'];
+
+            if ($products->has($productId)) {
+                CartItem::updateOrInsert(
+                    ['user_id' => $userId, 'product_id' => $productId],
+                    ['qty' => $qty, 'price' => $products[$productId]->price]
+                );
+            }
+        }
+
+        CartItem::where('user_id', $userId)
+            ->whereNotIn('product_id', $products->keys())
+            ->delete();
+
+        return back();
+    }
+
+    public function updateSingle(Request $request)
+    {
+        $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+            'qty' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $product = Product::findOrFail($request->product_id);
+
+        CartItem::updateOrInsert([
+            'user_id' => $request->user()->id,
+            'product_id' => $request->product_id,
+        ], [
+            'qty' => $request->qty,
+            'price' => $product->price,
+        ]);
+
+        return back();
+    }
+
+    public function checkout(Request $request)
+    {
+        $cartItems = $request->user()
+            ->cartItems()
+            ->with('product')
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return back()->with('error', 'Keranjang belanja kosong.');
+        }
+    }
+
+    public function destroy(Request $request, Product $product)
+    {
+        CartItem::where('user_id', $request->user()->id)
+            ->where('product_id', $product->id)
+            ->delete();
+
+        return back();
     }
 }

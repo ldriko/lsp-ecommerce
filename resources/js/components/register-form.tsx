@@ -13,10 +13,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { cn, format } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { SharedData } from "@/types";
 import { Link, useForm, usePage } from "@inertiajs/react";
-import { DatePicker } from "./date-picker";
 import { Textarea } from "./ui/textarea";
 
 export function RegisterForm({
@@ -25,10 +24,10 @@ export function RegisterForm({
 }: React.ComponentProps<"div">) {
     const { name } = usePage<SharedData>().props;
 
-    const { data, setData, errors, submit, processing, transform } = useForm({
+    const { data, setData, errors, submit, processing } = useForm({
         name: "",
         gender: "male",
-        date_of_birth: undefined as Date | undefined,
+        date_of_birth: "",
         city: "",
         address: "",
         phone: "",
@@ -39,12 +38,6 @@ export function RegisterForm({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        transform((data) => ({
-            ...data,
-            date_of_birth: format.rawDate(data.date_of_birth),
-        }));
-
         submit(AuthController.register());
     };
 
@@ -111,12 +104,16 @@ export function RegisterForm({
                                 <InputError message={errors.gender} />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="gender">Jenis Kelamin</Label>
-                                <DatePicker
-                                    date={data.date_of_birth}
-                                    onChange={(date) =>
-                                        setData("date_of_birth", date)
+                                <Label htmlFor="date_of_birth">
+                                    Tanggal Lahir
+                                </Label>
+                                <Input
+                                    value={data.date_of_birth}
+                                    onChange={(e) =>
+                                        setData("date_of_birth", e.target.value)
                                     }
+                                    id="date_of_birth"
+                                    type="date"
                                 />
                                 <InputError message={errors.date_of_birth} />
                             </div>
